@@ -1,15 +1,19 @@
 package EmailService.services;
 
+import EmailService.dtos.MetricsDto;
 import EmailService.models.DailyMetrics;
 import EmailService.models.User;
 import EmailService.repositories.DailyMetricsRepository;
+import EmailService.repositories.UserRepository;
 import EmailService.security.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -20,9 +24,9 @@ MetricsService {
     private final SessionUtils sessionUtils;
 
     @Autowired
-    public MetricsService(DailyMetricsRepository balanceMetricsRepository, SessionUtils sessionUtils) {
+    public MetricsService(DailyMetricsRepository balanceMetricsRepository, UserRepository userRepository) {
         this.dailyMetricsRepository = balanceMetricsRepository;
-        this.sessionUtils = sessionUtils;
+        this.sessionUtils = new SessionUtils(userRepository);
     }
 
     public void sendEmail(int amount) {
@@ -39,4 +43,11 @@ MetricsService {
         else return metrics.get();
     }
 
+    public int getEmails() {
+        return getOrCreateGlobalMetrics().getEmailsSent();
+    }
+
+    public List<MetricsDto> getDailyMetrics() {
+        return dailyMetricsRepository.findAllByDate(LocalDate.now()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
+    }
 }

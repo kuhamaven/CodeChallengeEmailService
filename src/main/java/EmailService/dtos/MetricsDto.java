@@ -1,6 +1,6 @@
-package alicestudios.EmailService.dtos;
+package EmailService.dtos;
 
-import alicestudios.EmailService.models.GlobalMetrics;
+import EmailService.models.DailyMetrics;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,37 +11,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetricsDto {
-    private int
-            brokenDrivers,
-            totalEarnedBits,
-            totalBattles,
-            harvestedCrops,
-            unlockedAchievements,
-            cleanedPoops,
-            totalEvolutions,
-            totalDeaths,
-            uniqueUsers,
-            completedCycles,
-            totalDestroyedBit,
-            numemons;
-
     private LocalDate date;
+    private int emailsSent;
+    private String username;
 
-    public static MetricsDto toDto(GlobalMetrics metrics) {
+
+    public static MetricsDto toDto(DailyMetrics metrics) {
         return new MetricsDto(
-                metrics.getBrokenDrivers(),
-                metrics.getTotalEarnedBits(),
-                metrics.getTotalBattles(),
-                metrics.getHarvestedCrops(),
-                metrics.getUnlockedAchievements(),
-                metrics.getCleanedPoops(),
-                metrics.getTotalEvolutions(),
-                metrics.getTotalDeaths(),
-                metrics.getUniqueUsers(),
-                metrics.getCompletedCycles(),
-                metrics.getTotalDestroyedBits(),
-                metrics.getNumemons(),
-                metrics.getDate()
+                metrics.getDate(),
+                metrics.getEmailsSent(),
+                metrics.getUser().getUsername()
         );
     }
 }

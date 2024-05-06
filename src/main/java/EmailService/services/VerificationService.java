@@ -1,6 +1,5 @@
 package EmailService.services;
 
-import EmailService.mail.EmailModel;
 import EmailService.mail.EmailSender;
 import EmailService.models.User;
 import EmailService.models.VerificationModel;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.internet.InternetAddress;
 
 @Service
 @Transactional
@@ -32,7 +30,7 @@ public class VerificationService {
                     "<br><br>Thanks for choosing us.";
         body += "<br><br><i>~Mail Service.</i>";
         try {
-            EmailModel email = new EmailModel(new InternetAddress(verification.getUser().getEmail()),"Welcome to Mail Service",body);
+            //EmailModel email = new EmailModel(new InternetAddress(verification.getUser().getEmail()),"Welcome to Mail Service",body);
             //sender.notifyWithGmail(email);
         } catch (Exception e) {
         }

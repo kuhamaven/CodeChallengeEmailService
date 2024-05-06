@@ -1,5 +1,7 @@
 package EmailService.controllers;
 
+import EmailService.dtos.MetricsDto;
+import EmailService.services.MetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ public class MetricsController {
     }
 
     @GetMapping("/Balance")
-    public BalanceMetricsDto getBalanceMetrics(){
-        return metricsService.getBalanceMetrics();
+    public List<MetricsDto> getDailyMetrics(){
+        return metricsService.getDailyMetrics();
     }
 
     @GetMapping("/Popularity")
