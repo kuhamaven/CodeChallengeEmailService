@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -44,6 +45,7 @@ public class User {
         this.type = UserType.USER;
         this.dailyQuota = 1000;
         this.active = false;
+        sentMails = new HashSet<>();
     }
 
     public User(String email, String username, String password, int dailyQuota) {
@@ -54,6 +56,7 @@ public class User {
 
         this.type = UserType.USER;
         this.active = false;
+        sentMails = new HashSet<>();
     }
 
     public static User fromDto(UserRegisterDto userDto) {
@@ -61,6 +64,7 @@ public class User {
     }
 
     public void addEmail(Email email){
+        if(sentMails==null) sentMails = new HashSet<>();
         sentMails.add(email);
     }
 
