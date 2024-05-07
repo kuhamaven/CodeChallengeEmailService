@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/metrics")
+@RequestMapping("/email")
 public class EmailController {
     private final EmailService emailService;
 
