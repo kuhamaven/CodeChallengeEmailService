@@ -24,8 +24,8 @@ MetricsService {
     private final SessionUtils sessionUtils;
 
     @Autowired
-    public MetricsService(DailyMetricsRepository balanceMetricsRepository, UserRepository userRepository) {
-        this.dailyMetricsRepository = balanceMetricsRepository;
+    public MetricsService(DailyMetricsRepository dailyMetricsRepository, UserRepository userRepository) {
+        this.dailyMetricsRepository = dailyMetricsRepository;
         this.sessionUtils = new SessionUtils(userRepository);
     }
 

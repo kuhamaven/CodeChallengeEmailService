@@ -32,7 +32,7 @@ public class VerificationService {
                     "<br><br>Thanks for choosing us.";
         body += "<br><br><i>~Mail Service.</i>";
         try {
-            Email email = new Email("Welcome to Mail Service",body,verification.getUser().getEmail(),userRepository.findByEmail("admin@mailservice.com").get());
+            Email email = new Email("Welcome to Mail Service",body,verification.getUser().getEmail(),userRepository.findByEmail("kuharokun@gmail.com").get());
             EmailSender.sendGrid(email);
         } catch (Exception e) {
 

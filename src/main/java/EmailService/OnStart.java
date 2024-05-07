@@ -23,8 +23,8 @@ public class OnStart {
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
         if (RUN_ON_START) {
-            if (!userService.usernameExists("analogman")) {
-                UserRegisterDto admin = new UserRegisterDto("admin@mailservice.com", "admin", System.getenv("ADMIN_PASSWORD"));
+            if (!userService.usernameExists("admin")) {
+                UserRegisterDto admin = new UserRegisterDto("kuharokun@gmail.com", "admin", System.getenv("ADMIN_PASSWORD"));
                 userService.createAdmin(admin);
             }
         }
