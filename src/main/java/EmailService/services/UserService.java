@@ -1,6 +1,6 @@
 package EmailService.services;
 
-import EmailService.dtos.user.UserRegisterDto;
+import EmailService.dtos.UserRegisterDto;
 import EmailService.exceptions.BadRequestException;
 import EmailService.models.User;
 import EmailService.models.VerificationModel;
@@ -37,6 +37,15 @@ UserService {
         return this.userRepository.save(user);
     }
 
+    public User createAdmin(UserRegisterDto userDto){
+        userDto.setUsername(userDto.getUsername().toLowerCase());
+        User user = User.fromDto(userDto);
+        user.setType(User.UserType.ADMIN);
+        user.setActive(true);
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        return this.userRepository.save(user);
+    }
+
     public boolean validUser(UserRegisterDto userDto) {
         String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (userDto.getUsername().length() < 3) return false;
@@ -66,6 +75,10 @@ UserService {
 
     public boolean emailExists(String email) {
         return this.userRepository.findByEmail(email.toLowerCase()).isPresent();
+    }
+
+    public void saveWithoutEncryption(User user) {
+        userRepository.save(user);
     }
 
     public User findLoggedUser() {

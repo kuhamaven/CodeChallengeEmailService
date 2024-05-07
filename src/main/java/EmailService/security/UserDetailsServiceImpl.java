@@ -1,6 +1,6 @@
-package alicestudios.EmailService.security;
+package EmailService.security;
 
-import alicestudios.EmailService.repositories.UserRepository;
+import EmailService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        alicestudios.EmailService.models.User applicationUser = userRepository.findByUsername(username)
+        EmailService.models.User applicationUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);

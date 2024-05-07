@@ -1,4 +1,4 @@
-package alicestudios.EmailService.security;
+package EmailService.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

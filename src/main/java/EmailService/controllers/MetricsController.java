@@ -17,18 +17,14 @@ public class MetricsController {
         this.metricsService = metricsService;
     }
 
-    @GetMapping("/Global")
-    public MetricsDto getGlobalMetrics(){
-        return metricsService.getMetrics();
-    }
-
-    @GetMapping("/Balance")
-    public List<MetricsDto> getDailyMetrics(){
+    @GetMapping("/daily")
+    public List<MetricsDto> getGlobalMetrics(){
         return metricsService.getDailyMetrics();
     }
 
-    @GetMapping("/Popularity")
-    public List<DigimonUseAndWins> getChildsPopularity(){
-        return metricsService.getPopularityMetrics();
+    @GetMapping("")
+    public List<MetricsDto> getUserMetrics(){
+        return metricsService.getUserMetrics();
     }
+
 }

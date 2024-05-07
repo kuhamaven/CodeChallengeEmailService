@@ -1,6 +1,6 @@
 package EmailService.controllers;
 
-import EmailService.dtos.user.UserRegisterDto;
+import EmailService.dtos.UserRegisterDto;
 import EmailService.models.User;
 import EmailService.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

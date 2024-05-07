@@ -1,4 +1,4 @@
-package alicestudios.EmailService.security;
+package EmailService.security;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,14 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/users/UsernameAvailable/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/users/EmailAvailable/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/status/**").permitAll()
                 .antMatchers(HttpMethod.POST,"login").permitAll()
                 .antMatchers(HttpMethod.GET,"/verify/**").permitAll()
-                .antMatchers(HttpMethod.PUT,"/reset/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/metrics/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/savedata/TopFive/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new AuthenticationFilter(authenticationManager()))

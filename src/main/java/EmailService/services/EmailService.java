@@ -32,12 +32,19 @@ EmailService {
     }
 
     public void sendEmail(EmailDto dto) {
+        User user = findLoggedUser();
+
         try{
             //TODO when using lists of recipients replace 1 by recipients.size()
+
             if(metricsService.getEmails()+1>=findLoggedUser().getDailyQuota()) throw new BadRequestException("User exceeded quota!");
-            Email email = new Email(dto.getSubject(),dto.getBody(),dto.getRecipient(),findLoggedUser());
+
+            Email email = new Email(dto.getSubject(),dto.getBody(),dto.getRecipient(),user);
+            email = emailRepository.save(email);
             EmailSender.sendGrid(email);
             metricsService.sendEmail(email.getRecipients().size());
+            user.addEmail(email);
+
         } catch (IOException e) {
             //TODO fallback to another service
             e.printStackTrace();

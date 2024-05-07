@@ -38,7 +38,7 @@ MetricsService {
 
     private DailyMetrics getOrCreateGlobalMetrics() {
         User user = sessionUtils.getCurrentUser();
-        Optional<DailyMetrics> metrics = dailyMetricsRepository.findAllByDateAndUser(LocalDate.now(),user);
+        Optional<DailyMetrics> metrics = dailyMetricsRepository.findByDateAndUser(LocalDate.now(),user);
         if(metrics.isEmpty()) return dailyMetricsRepository.save(new DailyMetrics(user));
         else return metrics.get();
     }
@@ -49,5 +49,9 @@ MetricsService {
 
     public List<MetricsDto> getDailyMetrics() {
         return dailyMetricsRepository.findAllByDate(LocalDate.now()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
+    }
+
+    public List<MetricsDto> getUserMetrics() {
+        return dailyMetricsRepository.findAllByUser(sessionUtils.getCurrentUser()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 }

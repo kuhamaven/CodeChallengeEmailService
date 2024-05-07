@@ -1,4 +1,4 @@
-package alicestudios.EmailService.security;
+package EmailService.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

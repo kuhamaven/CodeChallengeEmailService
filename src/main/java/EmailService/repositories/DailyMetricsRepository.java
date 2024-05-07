@@ -17,5 +17,5 @@ public interface DailyMetricsRepository extends PagingAndSortingRepository<Daily
 
      List<DailyMetrics> findAllByUser(User user);
 
-     Optional<DailyMetrics> findAllByDateAndUser(LocalDate date, User user);
+     Optional<DailyMetrics> findByDateAndUser(LocalDate date, User user);
 }

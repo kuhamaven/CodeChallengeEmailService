@@ -1,6 +1,6 @@
 package EmailService.models;
 
-import EmailService.dtos.user.UserRegisterDto;
+import EmailService.dtos.UserRegisterDto;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -64,7 +64,7 @@ public class User {
         sentMails.add(email);
     }
 
-    private enum UserType{
+    public enum UserType{
         USER,
         ADMIN
     }

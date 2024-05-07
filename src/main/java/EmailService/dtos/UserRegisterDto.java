@@ -1,4 +1,4 @@
-package EmailService.dtos.user;
+package EmailService.dtos;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
