@@ -17,7 +17,6 @@ public class VerificationService {
 
     private final VerificationRepository verificationRepository;
     private final UserRepository userRepository;
-    private final String BASE_URL = "Replace me eventually";
 
     @Autowired
     public VerificationService(VerificationRepository verificationRepository, UserRepository userRepository) {
@@ -29,7 +28,7 @@ public class VerificationService {
         VerificationModel verification = this.verificationRepository.save(verificationModel);
         String body = "Dear " + verification.getUser().getUsername() + ",<br>";
         body +=  "<br>Welcome to our <strong>Mail Service</strong>. <br><br>" +
-                    "Click here: "+BASE_URL+"/verify/"+verification.getToken() +" to verify your account and get started." +
+                    "Click here: "+System.getenv("BASE_URL")+"/verify/"+verification.getToken() +" to verify your account and get started." +
                     "<br><br>Thanks for choosing us.";
         body += "<br><br><i>~Mail Service.</i>";
         try {
