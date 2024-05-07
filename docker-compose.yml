@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    container_name: vpet_db
+    container_name: email_db
     image: postgres:12
     restart: always
     env_file:
@@ -12,18 +12,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-#  jibber-jabber-auth-api:
-#    container_name: api-auth
-#    #    image: jibber-jabber-user-auth_api #Queda buildeada del docker-compose build, eventualmente pusheada en un repo publico.
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - 8002:8002
-#    env_file:
-#      - ..env.production
-#    depends_on:
-#      - jibber-jabber-auth-db
 
 volumes:
   pgdata:
