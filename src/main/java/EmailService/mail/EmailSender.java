@@ -6,14 +6,14 @@ import java.util.List;
 
 public class EmailSender {
 
-    private static final List<EmailService> serviceList = Arrays.asList(
+    private static final List<EmailServiceProvider> serviceList = Arrays.asList(
             new MailgunService(),
             new SendGridService()
     );
 
     public static void sendEmail(EmailService.models.Email email){
         // Iterates through all services. If one can't send the mail it keeps trying with the next one.
-        for (EmailService emailService : serviceList) {
+        for (EmailServiceProvider emailService : serviceList) {
             if (emailService.sendEmail(email)) return;
         }
 

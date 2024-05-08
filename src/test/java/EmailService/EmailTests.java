@@ -9,7 +9,6 @@ import EmailService.models.User;
 import EmailService.services.EmailService;
 import EmailService.services.MetricsService;
 import EmailService.services.UserService;
-import EmailService.services.VerificationService;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -51,7 +50,7 @@ public class EmailTests {
 
         // Mock the EmailSender.sendGrid method to do nothing
         try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
-            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+            emailSenderMock.when(() -> EmailSender.sendEmail(any(Email.class)))
                     .thenAnswer((Answer<Void>) invocation -> null);
 
             // Mock the other relevant methods
@@ -74,7 +73,7 @@ public class EmailTests {
 
         // Mock the EmailSender.sendGrid method to do nothing
         try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
-            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+            emailSenderMock.when(() -> EmailSender.sendEmail(any(Email.class)))
                     .thenAnswer((Answer<Void>) invocation -> null);
 
             // Mock the other relevant methods

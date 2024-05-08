@@ -6,7 +6,7 @@ import com.mailgun.client.MailgunClient;
 import com.mailgun.model.message.Message;
 import com.mailgun.model.message.MessageResponse;
 
-public class MailgunService implements EmailService {
+public class MailgunService implements EmailServiceProvider {
 
     @Override
     public boolean sendEmail(Email email) {

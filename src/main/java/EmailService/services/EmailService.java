@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-
 
 @Service
 @Transactional
@@ -37,17 +35,20 @@ EmailService {
         try{
             //TODO when using lists of recipients replace 1 by recipients.size()
 
-            if(metricsService.getEmails()+1>=findLoggedUser().getDailyQuota()) throw new BadRequestException("User exceeded quota!");
+            //Prevent user from exceeding quota.
+            if(metricsService.getEmails()+1>=findLoggedUser().getDailyQuota())
+                throw new BadRequestException("User exceeded quota!");
 
             Email email = new Email(dto.getSubject(),dto.getBody(),dto.getRecipient(),user);
+            EmailSender.sendEmail(email);
+
+            //If exception gets thrown, this gets ignored keeping DB clean.
             email = emailRepository.save(email);
-            EmailSender.sendGrid(email);
             metricsService.sendEmail(email.getRecipients().size());
             user.addEmail(email);
 
-        } catch (IOException e) {
-            //TODO fallback to another service
-            e.printStackTrace();
+        } catch (BadRequestException e) {
+            throw e;
         }
     }
 
