@@ -1,6 +1,7 @@
 package EmailService.services;
 
 import EmailService.dtos.MetricsDto;
+import EmailService.exceptions.BadRequestException;
 import EmailService.models.DailyMetrics;
 import EmailService.models.User;
 import EmailService.repositories.DailyMetricsRepository;
@@ -37,10 +38,15 @@ MetricsService {
     }
 
     private DailyMetrics getOrCreateGlobalMetrics() {
-        User user = sessionUtils.getCurrentUser();
+        User user = findLoggedUser();
         Optional<DailyMetrics> metrics = dailyMetricsRepository.findByDateAndUser(LocalDate.now(),user);
         if(metrics.isEmpty()) return dailyMetricsRepository.save(new DailyMetrics(user));
         else return metrics.get();
+    }
+
+    public User findLoggedUser() {
+        User user = sessionUtils.getCurrentUser();
+        return user;
     }
 
     public int getEmails() {
@@ -48,10 +54,12 @@ MetricsService {
     }
 
     public List<MetricsDto> getDailyMetrics() {
+        if(findLoggedUser().getType().equals(User.UserType.USER)) throw new BadRequestException("Illegal access!");
         return dailyMetricsRepository.findAllByDate(LocalDate.now()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 
     public List<MetricsDto> getUserMetrics() {
-        return dailyMetricsRepository.findAllByUser(sessionUtils.getCurrentUser()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
+        if(findLoggedUser().getType().equals(User.UserType.USER)) throw new BadRequestException("Illegal access!");
+        return dailyMetricsRepository.findAllByUser(findLoggedUser()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 }

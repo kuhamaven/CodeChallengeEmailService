@@ -2,66 +2,77 @@ package EmailService;
 
 import EmailService.dtos.UserRegisterDto;
 import EmailService.exceptions.BadRequestException;
-import EmailService.repositories.UserRepository;
-import EmailService.repositories.VerificationRepository;
+import EmailService.mail.EmailSender;
+import EmailService.models.Email;
 import EmailService.services.UserService;
-import EmailService.services.VerificationService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.transaction.Transactional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockStatic;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserTests {
-    @Mock
+    @Autowired
     private UserService userService;
 
-    @Mock
-    private VerificationService verificationService;
+    @Test
+    @Transactional
+    public void test001_validUserShouldRegister() {
+        // Prevent the API from emailing the test user
+        try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
+            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+                    .thenAnswer((Answer<Void>) invocation -> null);
 
-    @Autowired
-    private UserRepository userRepository;
+            // Prepare the user
+            UserRegisterDto dto = new UserRegisterDto("test@email.com", "testuser", "password123");
 
-    @Autowired
-    private VerificationRepository verificationRepository;
+            // Call the register method
+            userService.registerUser(dto);
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @BeforeAll
-    void setUp(){
-        verificationService = new VerificationService(verificationRepository,userRepository);
-        userService = new UserService(userRepository,passwordEncoder,verificationService);
+            // Assert the result
+            Assertions.assertTrue(userService.usernameExists(dto.getUsername()));
+        }
     }
 
-    @Test @Transactional
-    public void test001_validUserShouldRegister(){
-        UserRegisterDto dto = new UserRegisterDto("test@email.com","testuser","password123");
-        userService.registerUser(dto);
-        Assertions.assertTrue(userService.usernameExists(dto.getUsername()));
-    }
+    @Test
+    @Transactional
+    public void test002_invalidUserShouldntRegister() {
+        // Prepare the user
+        UserRegisterDto dto = new UserRegisterDto("invalidemail", "invalid", "password123");
 
-    @Test @Transactional
-    public void test002_invalidUserShouldntRegister(){
-        UserRegisterDto dto = new UserRegisterDto("invalidemail","invalid","password123");
+        // Call the register method and assert it throws the right exception
         Assertions.assertThrows(BadRequestException.class, () -> {
             userService.registerUser(dto);
         });
     }
 
-    @Test @Transactional
-    public void test003_takenUsernameShouldntRegister(){
-        UserRegisterDto dto = new UserRegisterDto("test@email.com","testuser","password123");
-        userService.registerUser(dto);
-        Assertions.assertThrows(BadRequestException.class, () -> {
+    @Test
+    @Transactional
+    public void test003_takenUsernameShouldntRegister() {
+        // Prevent the API from emailing the test user
+        try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
+            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+                    .thenAnswer((Answer<Void>) invocation -> null);
+
+            // Prepare the user
+            UserRegisterDto dto = new UserRegisterDto("test@email.com", "testuser", "password123");
+
+            // Call the register method
             userService.registerUser(dto);
-        });
+
+            // Call the register method again, and assert it throws the right exception
+            Assertions.assertThrows(BadRequestException.class, () -> {
+                userService.registerUser(dto);
+            });
+        }
     }
 }
