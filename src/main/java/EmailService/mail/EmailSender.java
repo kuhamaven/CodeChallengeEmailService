@@ -1,38 +1,24 @@
 package EmailService.mail;
 
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.Response;
-import com.sendgrid.SendGrid;
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-
-import java.io.IOException;
+import EmailService.exceptions.BadRequestException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmailSender {
 
+    private static final List<EmailService> serviceList = Arrays.asList(
+            new MailgunService(),
+            new SendGridService()
+    );
 
-    public static void sendGrid(EmailService.models.Email email) throws IOException {
-        Email from = new Email(System.getenv("ADMIN_EMAIL"));
+    public static void sendEmail(EmailService.models.Email email){
+        // Iterates through all services. If one can't send the mail it keeps trying with the next one.
+        for (EmailService emailService : serviceList) {
+            if (emailService.sendEmail(email)) return;
+        }
 
-        email.getRecipients().forEach(recipient -> {
-            Email to = new Email(recipient);
-            Content content = new Content("text/html", email.getBody());
-            Mail mail = new Mail(from, email.getSubject(), to, content);
-
-            SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
-            Request request = new Request();
-            try {
-                request.setMethod(Method.POST);
-                request.setEndpoint("mail/send");
-                request.setBody(mail.build());
-                Response response = sg.api(request);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
+        // In case no service could send it, throws the required error.
+        throw new BadRequestException("None of our services are available, please try again later.");
     }
 
 }
