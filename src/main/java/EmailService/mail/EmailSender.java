@@ -7,8 +7,8 @@ import java.util.List;
 public class EmailSender {
 
     private static final List<EmailServiceProvider> serviceList = Arrays.asList(
-            new MailgunService(),
-            new SendGridService()
+            new SendGridService(),
+            new MailgunService()
     );
 
     public static void sendEmail(EmailService.models.Email email){
