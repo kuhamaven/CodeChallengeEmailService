@@ -54,12 +54,10 @@ MetricsService {
     }
 
     public List<MetricsDto> getDailyMetrics() {
-        if(findLoggedUser().getType().equals(User.UserType.USER)) throw new BadRequestException("Illegal access!");
         return dailyMetricsRepository.findAllByDate(LocalDate.now()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 
     public List<MetricsDto> getUserMetrics() {
-        if(findLoggedUser().getType().equals(User.UserType.USER)) throw new BadRequestException("Illegal access!");
         return dailyMetricsRepository.findAllByUser(findLoggedUser()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 }

@@ -36,7 +36,7 @@ EmailService {
             //TODO when using lists of recipients replace 1 by recipients.size()
 
             //Prevent user from exceeding quota.
-            if(metricsService.getEmails()+1>=findLoggedUser().getDailyQuota())
+            if(metricsService.getEmails()+1>findLoggedUser().getDailyQuota())
                 throw new BadRequestException("User exceeded quota!");
 
             Email email = new Email(dto.getSubject(),dto.getBody(),dto.getRecipient(),user);
