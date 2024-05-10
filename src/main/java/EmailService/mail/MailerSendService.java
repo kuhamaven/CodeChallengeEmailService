@@ -13,7 +13,7 @@ public class MailerSendService implements EmailServiceProvider {
         for (String recipient : email.getRecipients()) {
             Email mailerSend = new Email();
 
-            mailerSend.setFrom(email.getUser().getUsername(), System.getenv("ADMIN_EMAIL"));
+            mailerSend.setFrom(email.getUser().getUsername(), System.getenv("MAILER_SEND_EMAIL"));
             mailerSend.addRecipient(recipient, recipient);
 
             mailerSend.setSubject(email.getSubject());
