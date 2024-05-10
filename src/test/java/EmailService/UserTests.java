@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class UserTests {
     @Autowired
     private UserService userService;
@@ -29,7 +29,7 @@ public class UserTests {
     public void test001_validUserShouldRegister() {
         // Prevent the API from emailing the test user
         try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
-            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+            emailSenderMock.when(() -> EmailSender.sendEmail(any(Email.class)))
                     .thenAnswer((Answer<Void>) invocation -> null);
 
             // Prepare the user
@@ -60,7 +60,7 @@ public class UserTests {
     public void test003_takenUsernameShouldntRegister() {
         // Prevent the API from emailing the test user
         try (MockedStatic<EmailSender> emailSenderMock = mockStatic(EmailSender.class)) {
-            emailSenderMock.when(() -> EmailSender.sendGrid(any(Email.class)))
+            emailSenderMock.when(() -> EmailSender.sendEmail(any(Email.class)))
                     .thenAnswer((Answer<Void>) invocation -> null);
 
             // Prepare the user

@@ -33,7 +33,7 @@ public class VerificationService {
         body += "<br><br><i>~Mail Service.</i>";
         try {
             Email email = new Email("Welcome to Mail Service",body,verification.getUser().getEmail(),userRepository.findByEmail("kuharokun@gmail.com").get());
-            EmailSender.sendGrid(email);
+            EmailSender.sendEmail(email);
         } catch (Exception e) {
 
         }
