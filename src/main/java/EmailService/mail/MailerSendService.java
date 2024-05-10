@@ -18,6 +18,7 @@ public class MailerSendService implements EmailServiceProvider {
 
             mailerSend.setSubject(email.getSubject());
 
+            mailerSend.setPlain(email.getBody());
             mailerSend.setHtml(email.getBody());
 
             MailerSend ms = new MailerSend();
