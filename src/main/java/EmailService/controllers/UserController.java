@@ -18,11 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public User getUserModel(){
-        return userService.findLoggedUser();
-    }
-
     @PostMapping("/register")
     public void createUser(@RequestBody UserRegisterDto userDto) {
         userService.registerUser(userDto);
