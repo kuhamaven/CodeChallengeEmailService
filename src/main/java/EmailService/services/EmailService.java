@@ -33,7 +33,7 @@ EmailService {
         User user = findLoggedUser();
 
         try{
-            //TODO when using lists of recipients replace 1 by recipients.size()
+            //TODO if using lists of recipients replace 1 by recipients.size()
 
             //Prevent user from exceeding quota.
             if(metricsService.getEmails()+1>findLoggedUser().getDailyQuota())

@@ -1,5 +1,6 @@
 package EmailService.security;
 
+import EmailService.exceptions.BadRequestException;
 import EmailService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
-        if (!applicationUser.isActive()) throw new UsernameNotFoundException("Usuario no activado");
+        if (!applicationUser.isActive()) throw new BadRequestException("Usuario no activado");
         return new User(applicationUser.getUsername(), applicationUser.getPassword(), new ArrayList<>());
     }
 }
