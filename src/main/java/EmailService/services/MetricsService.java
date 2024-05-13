@@ -31,6 +31,7 @@ MetricsService {
     }
 
     public void sendEmail(int amount) {
+        // Double check to avoid adding illegal data
         if (amount <= 0) return;
         DailyMetrics metrics = getOrCreateGlobalMetrics();
         metrics.addEmailsSent(amount);
@@ -38,6 +39,7 @@ MetricsService {
     }
 
     private DailyMetrics getOrCreateGlobalMetrics() {
+        // Get the current user
         User user = findLoggedUser();
         Optional<DailyMetrics> metrics = dailyMetricsRepository.findByDateAndUser(LocalDate.now(),user);
         if(metrics.isEmpty()) return dailyMetricsRepository.save(new DailyMetrics(user));
@@ -57,7 +59,4 @@ MetricsService {
         return dailyMetricsRepository.findAllByDate(LocalDate.now()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
     }
 
-    public List<MetricsDto> getUserMetrics() {
-        return dailyMetricsRepository.findAllByUser(findLoggedUser()).stream().map(MetricsDto::toDto).collect(Collectors.toList());
-    }
 }

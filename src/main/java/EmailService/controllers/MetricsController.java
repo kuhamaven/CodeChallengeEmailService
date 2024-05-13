@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/metrics")
+@RequestMapping("/stats")
 public class MetricsController {
     private final MetricsService metricsService;
     private final PermissionsValidator permissionsValidator;
@@ -20,16 +20,9 @@ public class MetricsController {
         this.permissionsValidator = permissionsValidator;
     }
 
-    @GetMapping("/daily")
+    @GetMapping("")
     public List<MetricsDto> getGlobalMetrics(){
         permissionsValidator.isAdmin();
         return metricsService.getDailyMetrics();
     }
-
-    @GetMapping("")
-    public List<MetricsDto> getUserMetrics(){
-        permissionsValidator.isAdmin();
-        return metricsService.getUserMetrics();
-    }
-
 }
